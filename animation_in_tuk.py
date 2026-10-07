@@ -19,10 +19,8 @@ MAIN_LOOP_DELAY = 0.01
 BACKGROUND_IMAGE = 'TUK_GROUND.png'
 SPRITE_IMAGE = 'animation_sheet.png'
 
-IDLE_ROWS = {'left': 0, 'right': 0, 'up': 0, 'down': 0}
-MOVE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
-IDLE_FRAME_START = 0
-MOVE_FRAME_START = 0
+IDLE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
+MOVE_ROWS = {'left': 0, 'right': 100, 'up': 200, 'down': 300}
 
 
 class Player:
@@ -53,7 +51,6 @@ class Player:
             self.state = 'move'
             if dx != 0:
                 self.facing = 'right' if dx > 0 else 'left'
-            # 위아래 입력일 때는 마지막 좌우 방향을 유지한다.
         else:
             self.state = 'idle'
 
@@ -74,10 +71,13 @@ class Player:
         return MOVE_ROWS[self.facing]
 
     def draw(self, sprite_sheet):
-        # 화면 경계 안에서만 이동하는 캐릭터를 그린다.
         row = self.animation_row()
         sprite_x = self.frame * SPRITE_WIDTH
-        sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+
+        if self.facing == 'left':
+            sprite_sheet.clip_draw((FRAME_COUNT - 1 - self.frame) * SPRITE_WIDTH, row, -SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+        else:
+            sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
 
 
 def clamp(value, lower, upper):
