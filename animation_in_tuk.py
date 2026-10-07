@@ -14,6 +14,7 @@ SPRITE_IMAGE = 'animation_sheet.png'
 
 IDLE_ROWS = {'left': 0, 'right': 0, 'up': 0, 'down': 0}
 MOVE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
+IDLE_FRAME_START = 0
 
 
 class Player:
