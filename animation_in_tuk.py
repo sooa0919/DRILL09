@@ -29,17 +29,7 @@ class Player:
         self.is_moving = False
 
     def update(self, dt, pressed):
-        dx = 0
-        dy = 0
-
-        if pressed.get(SDLK_RIGHT, False):
-            dx += 1
-        if pressed.get(SDLK_LEFT, False):
-            dx -= 1
-        if pressed.get(SDLK_UP, False):
-            dy += 1
-        if pressed.get(SDLK_DOWN, False):
-            dy -= 1
+        dx, dy = direction_from_input(pressed)
 
         self.move_x = dx
         self.move_y = dy
@@ -66,6 +56,22 @@ class Player:
         row = IDLE_ROWS[self.facing] if self.state == 'idle' else MOVE_ROWS[self.facing]
         sprite_x = self.frame * SPRITE_WIDTH
         sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+
+
+def direction_from_input(pressed):
+    dx = 0
+    dy = 0
+
+    if pressed.get(SDLK_RIGHT, False):
+        dx += 1
+    if pressed.get(SDLK_LEFT, False):
+        dx -= 1
+    if pressed.get(SDLK_UP, False):
+        dy += 1
+    if pressed.get(SDLK_DOWN, False):
+        dy -= 1
+
+    return dx, dy
 
 
 def handle_events(pressed):
