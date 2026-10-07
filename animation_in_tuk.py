@@ -46,6 +46,7 @@ class Player:
             self.state = 'move'
             if dx != 0:
                 self.facing = 'right' if dx > 0 else 'left'
+            # 위아래 입력일 때는 마지막 좌우 방향을 유지한다.
         else:
             self.state = 'idle'
 
