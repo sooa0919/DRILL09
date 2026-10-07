@@ -7,6 +7,8 @@ SPRITE_HEIGHT = 100
 MOVE_SPEED = 220.0
 FRAME_INTERVAL = 0.08
 FRAME_COUNT = 8
+BACKGROUND_IMAGE = 'TUK_GROUND.png'
+SPRITE_IMAGE = 'animation_sheet.png'
 
 IDLE_ROWS = {'left': 0, 'right': 0, 'up': 0, 'down': 0}
 MOVE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
@@ -79,8 +81,8 @@ def handle_events(pressed):
 def main():
     open_canvas(WINDOW_WIDTH, WINDOW_HEIGHT)
     hide_cursor()
-    background = load_image('TUK_GROUND.png')
-    sprite_sheet = load_image('animation_sheet.png')
+    background = load_image(BACKGROUND_IMAGE)
+    sprite_sheet = load_image(SPRITE_IMAGE)
 
     running = True
     player = Player(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
