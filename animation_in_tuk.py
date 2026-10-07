@@ -59,6 +59,7 @@ class Player:
         if self.frame_time >= FRAME_INTERVAL:
             self.frame = (self.frame + 1) % FRAME_COUNT
             self.frame_time = 0.0
+        # 이동 상태와 정지 상태가 모두 애니메이션 타이머와 연결된다.
 
     def animation_row(self):
         if self.is_idle():
