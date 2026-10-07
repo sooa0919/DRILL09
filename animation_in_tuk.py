@@ -59,9 +59,14 @@ class Player:
             self.frame = (self.frame + 1) % FRAME_COUNT
             self.frame_time = 0.0
 
+    def animation_row(self):
+        if self.state == 'idle':
+            return IDLE_ROWS[self.facing]
+        return MOVE_ROWS[self.facing]
+
     def draw(self, sprite_sheet):
         # 화면 경계 안에서만 이동하는 캐릭터를 그린다.
-        row = IDLE_ROWS[self.facing] if self.state == 'idle' else MOVE_ROWS[self.facing]
+        row = self.animation_row()
         sprite_x = self.frame * SPRITE_WIDTH
         sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
 
