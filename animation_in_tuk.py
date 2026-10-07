@@ -15,6 +15,7 @@ START_Y = WINDOW_HEIGHT // 2
 MOVE_SPEED = 220.0
 FRAME_INTERVAL = 0.08
 FRAME_COUNT = 8
+MAIN_LOOP_DELAY = 0.01
 BACKGROUND_IMAGE = 'TUK_GROUND.png'
 SPRITE_IMAGE = 'animation_sheet.png'
 
@@ -38,12 +39,12 @@ class Player:
 
     def update(self, dt, pressed):
         dx, dy = direction_from_input(pressed)
-        self.set_motion(dx, dy)
+        self.set_motion(dx, dy, dt)
 
     def is_idle(self):
         return not self.is_moving
 
-    def set_motion(self, dx, dy):
+    def set_motion(self, dx, dy, dt):
         self.move_x = dx
         self.move_y = dy
         self.is_moving = dx != 0 or dy != 0
@@ -138,7 +139,7 @@ def main():
         background.draw(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
         player.draw(sprite_sheet)
         update_canvas()
-        delay(0.01)
+        delay(MAIN_LOOP_DELAY)
 
     close_canvas()
 
