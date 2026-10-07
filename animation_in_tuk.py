@@ -32,6 +32,9 @@ class Player:
         dx, dy = direction_from_input(pressed)
         self.set_motion(dx, dy)
 
+    def is_idle(self):
+        return not self.is_moving
+
     def set_motion(self, dx, dy):
         self.move_x = dx
         self.move_y = dy
