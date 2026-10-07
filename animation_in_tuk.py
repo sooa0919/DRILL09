@@ -123,6 +123,9 @@ def main():
         last_time = now
 
         running = handle_events(pressed)
+        if not running:
+            break
+
         player.update(dt, pressed)
 
         clear_canvas()
