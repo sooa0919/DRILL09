@@ -30,11 +30,14 @@ class Player:
 
     def update(self, dt, pressed):
         dx, dy = direction_from_input(pressed)
+        self.set_motion(dx, dy)
 
+    def set_motion(self, dx, dy):
         self.move_x = dx
         self.move_y = dy
+        self.is_moving = dx != 0 or dy != 0
 
-        if dx != 0 or dy != 0:
+        if self.is_moving:
             self.state = 'move'
             if dx != 0:
                 self.facing = 'right' if dx > 0 else 'left'
