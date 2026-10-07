@@ -7,6 +7,8 @@ SPRITE_HEIGHT = 100
 MOVE_SPEED = 220.0
 FRAME_INTERVAL = 0.08
 FRAME_COUNT = 8
+START_X = WINDOW_WIDTH // 2
+START_Y = WINDOW_HEIGHT // 2
 BACKGROUND_IMAGE = 'TUK_GROUND.png'
 SPRITE_IMAGE = 'animation_sheet.png'
 
@@ -85,7 +87,7 @@ def main():
     sprite_sheet = load_image(SPRITE_IMAGE)
 
     running = True
-    player = Player(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
+    player = Player(START_X, START_Y)
     pressed = {SDLK_LEFT: False, SDLK_RIGHT: False, SDLK_UP: False, SDLK_DOWN: False}
 
     last_time = get_time()
