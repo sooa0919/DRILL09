@@ -19,8 +19,8 @@ MAIN_LOOP_DELAY = 0.01
 BACKGROUND_IMAGE = 'TUK_GROUND.png'
 SPRITE_IMAGE = 'animation_sheet.png'
 
-IDLE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
-MOVE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
+IDLE_ROWS = {'left': 202, 'right': 302, 'up': 202, 'down': 302}
+MOVE_ROWS = {'left': 2, 'right': 102, 'up': 102, 'down': 2}
 
 
 class Player:
@@ -43,6 +43,7 @@ class Player:
         return self.state == 'idle'
 
     def set_motion(self, dx, dy, dt):
+        previous_state = self.state
         self.move_x = dx
         self.move_y = dy
         self.is_moving = dx != 0 or dy != 0
@@ -53,7 +54,10 @@ class Player:
                 self.facing = 'right' if dx > 0 else 'left'
         else:
             self.state = 'idle'
+
+        if self.state != previous_state:
             self.frame = 0
+            self.frame_time = 0.0
 
         self.x += dx * MOVE_SPEED * dt
         self.y += dy * MOVE_SPEED * dt
@@ -61,12 +65,10 @@ class Player:
         self.y = clamp(self.y, SPRITE_HEIGHT // 2, WINDOW_HEIGHT - SPRITE_HEIGHT // 2)
 
         self.frame_time += dt
-        if self.state == 'move' and self.frame_time >= FRAME_INTERVAL:
-            self.frame = (self.frame + 1) % FRAME_COUNT
-            self.frame_time = 0.0
-        elif self.state == 'idle':
-            self.frame = 0
-            self.frame_time = 0.0
+        if self.frame_time >= FRAME_INTERVAL:
+            frames_to_advance = int(self.frame_time / FRAME_INTERVAL)
+            self.frame = (self.frame + frames_to_advance) % FRAME_COUNT
+            self.frame_time -= frames_to_advance * FRAME_INTERVAL
 
     def animation_row(self):
         if self.is_idle():
@@ -74,16 +76,13 @@ class Player:
         return MOVE_ROWS[self.facing]
 
     def animation_frame(self):
-        return 0 if self.is_idle() else self.frame
+        return self.frame
 
     def draw(self, sprite_sheet):
         row = self.animation_row()
         sprite_x = self.animation_frame() * SPRITE_WIDTH
 
-        if self.facing == 'left':
-            sprite_sheet.clip_draw(sprite_x, row, -SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
-        else:
-            sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+        sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
 
 
 def clamp(value, lower, upper):
