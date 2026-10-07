@@ -20,7 +20,7 @@ BACKGROUND_IMAGE = 'TUK_GROUND.png'
 SPRITE_IMAGE = 'animation_sheet.png'
 
 IDLE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
-MOVE_ROWS = {'left': 0, 'right': 100, 'up': 200, 'down': 300}
+MOVE_ROWS = {'left': 300, 'right': 200, 'up': 100, 'down': 0}
 
 
 class Player:
@@ -40,7 +40,7 @@ class Player:
         self.set_motion(dx, dy, dt)
 
     def is_idle(self):
-        return not self.is_moving
+        return self.state == 'idle'
 
     def set_motion(self, dx, dy, dt):
         self.move_x = dx
@@ -53,6 +53,7 @@ class Player:
                 self.facing = 'right' if dx > 0 else 'left'
         else:
             self.state = 'idle'
+            self.frame = 0
 
         self.x += dx * MOVE_SPEED * dt
         self.y += dy * MOVE_SPEED * dt
@@ -60,22 +61,27 @@ class Player:
         self.y = clamp(self.y, SPRITE_HEIGHT // 2, WINDOW_HEIGHT - SPRITE_HEIGHT // 2)
 
         self.frame_time += dt
-        if self.frame_time >= FRAME_INTERVAL:
+        if self.state == 'move' and self.frame_time >= FRAME_INTERVAL:
             self.frame = (self.frame + 1) % FRAME_COUNT
             self.frame_time = 0.0
-        # 이동 상태와 정지 상태가 모두 애니메이션 타이머와 연결된다.
+        elif self.state == 'idle':
+            self.frame = 0
+            self.frame_time = 0.0
 
     def animation_row(self):
         if self.is_idle():
             return IDLE_ROWS[self.facing]
         return MOVE_ROWS[self.facing]
 
+    def animation_frame(self):
+        return 0 if self.is_idle() else self.frame
+
     def draw(self, sprite_sheet):
         row = self.animation_row()
-        sprite_x = self.frame * SPRITE_WIDTH
+        sprite_x = self.animation_frame() * SPRITE_WIDTH
 
         if self.facing == 'left':
-            sprite_sheet.clip_draw((FRAME_COUNT - 1 - self.frame) * SPRITE_WIDTH, row, -SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+            sprite_sheet.clip_draw(sprite_x, row, -SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
         else:
             sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
 
