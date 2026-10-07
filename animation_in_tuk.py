@@ -46,9 +46,8 @@ class Player:
 
         self.x += dx * MOVE_SPEED * dt
         self.y += dy * MOVE_SPEED * dt
-
-        self.x = max(SPRITE_WIDTH // 2, min(self.x, WINDOW_WIDTH - SPRITE_WIDTH // 2))
-        self.y = max(SPRITE_HEIGHT // 2, min(self.y, WINDOW_HEIGHT - SPRITE_HEIGHT // 2))
+        self.x = clamp(self.x, SPRITE_WIDTH // 2, WINDOW_WIDTH - SPRITE_WIDTH // 2)
+        self.y = clamp(self.y, SPRITE_HEIGHT // 2, WINDOW_HEIGHT - SPRITE_HEIGHT // 2)
 
         self.frame_time += dt
         if self.frame_time >= FRAME_INTERVAL:
@@ -59,6 +58,10 @@ class Player:
         row = IDLE_ROWS[self.facing] if self.state == 'idle' else MOVE_ROWS[self.facing]
         sprite_x = self.frame * SPRITE_WIDTH
         sprite_sheet.clip_draw(sprite_x, row, SPRITE_WIDTH, SPRITE_HEIGHT, self.x, self.y)
+
+
+def clamp(value, lower, upper):
+    return max(lower, min(value, upper))
 
 
 def direction_from_input(pressed):
