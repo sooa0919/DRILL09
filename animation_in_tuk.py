@@ -26,6 +26,7 @@ class Player:
         self.frame_time = 0.0
         self.move_x = 0
         self.move_y = 0
+        self.is_moving = False
 
     def update(self, dt, pressed):
         dx = 0
