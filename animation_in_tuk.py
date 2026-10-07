@@ -95,7 +95,7 @@ def main():
 
     running = True
     player = Player(START_X, START_Y)
-    pressed = {SDLK_LEFT: False, SDLK_RIGHT: False, SDLK_UP: False, SDLK_DOWN: False}
+    pressed = {key: False for key in (SDLK_LEFT, SDLK_RIGHT, SDLK_UP, SDLK_DOWN)}
 
     last_time = get_time()
     while running:
