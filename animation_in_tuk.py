@@ -61,7 +61,7 @@ class Player:
             self.frame_time = 0.0
 
     def animation_row(self):
-        if self.state == 'idle':
+        if self.is_idle():
             return IDLE_ROWS[self.facing]
         return MOVE_ROWS[self.facing]
 
